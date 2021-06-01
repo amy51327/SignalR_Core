@@ -31,23 +31,17 @@ connection.start().then(function () {
 document.getElementById("messageInput")
     .addEventListener("keyup", function (event) {
         event.preventDefault();
-        if (event.keyCode === 13) {
+        var message = this.value;
+        if (event.keyCode === 13 && message.replace(/\s/g, '').length) {
             var user = document.getElementById("userInput").value;
-            var message = document.getElementById("messageInput").value;
             connection.invoke("SendMessage", user, message).catch(function (err) {
                 return console.error(err.toString());
             });
+            this.value = '';
             event.preventDefault();
         }
     });
-//document.getElementById("sendButton").addEventListener("click", function (event) {
-//    var user = document.getElementById("userInput").value;
-//    var message = document.getElementById("messageInput").value;
-//    connection.invoke("SendMessage", user, message).catch(function (err) {
-//        return console.error(err.toString());
-//    });
-//    event.preventDefault();
-//});
+
 
 //server傳回
 //show訊息
