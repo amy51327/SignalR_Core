@@ -62,7 +62,7 @@ namespace SignalR_Core.Hubs
             {
                 UserHandler.user.Remove(item);//刪除
 
-                Clients.All.SendAsync("RemoveUser", item.name);  //呼叫前端function       
+                Clients.All.SendAsync("UserOffline", item.name);  //呼叫前端function       
             }
             return base.OnDisconnectedAsync(exception);
         }

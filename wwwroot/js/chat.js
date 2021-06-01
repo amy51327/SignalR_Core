@@ -68,8 +68,8 @@ connection.on("AddUser", function (user) {
                  <span>(</span><span class="word_orange">"${user.name}加入聊天室"</span><span>);</span>`);     
 
 });
-//remove user list
-connection.on("RemoveUser", function (removeName, userList) {
+//user離線
+connection.on("UserOffline", function (removeName) {
     //重新載入user列表
     updateUserList();
     $("#messagesList").append(`<div class="word_green">//Console.WriteLine("${removeName}離開聊天室");</div>`);
