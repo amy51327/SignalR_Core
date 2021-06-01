@@ -52,38 +52,36 @@ document.getElementById("messageInput")
 //server傳回
 //show訊息
 connection.on("ReceiveMessage", function (user, message) {
-    var li = document.createElement("li");
-    document.getElementById("messagesList").appendChild(li);
-    li.textContent = `${user} says ${message}`;
+    $("#messagesList").append(`<div><span class="word_darkblue">public string </span>
+<span class="word_yellow">${user}</span>()<br>{<br><div class="message_content">
+<span class="word_purple">return </span><span class="word_orange">"${message}"</span>;</div>}</div>`);
+
+
 });
 //add user list
-connection.on("AddUser", function (user) {        
-    
-    $("#messagesList")
-        .append(`<li><span class="nametitle">${user.name}</span>加入聊天室</li>`);
+connection.on("AddUser", function (user) {
     //重新載入user列表
-    connection.invoke("GetLastestUsetList").catch(function (err) {
-        return console.error(err.toString());
-    });
+    updateUserList();
+
+    $("#messagesList")
+        .append(`<div><span class="word_blue">Console</span>.<span class="word_yellow">WriteLine</span>
+                 <span>(</span><span class="word_orange">"${user.name}加入聊天室"</span><span>);</span>`);     
 
 });
 //remove user list
 connection.on("RemoveUser", function (removeName, userList) {
     //重新載入user列表
     updateUserList();
-    document.getElementById("messagesList")
-        .append(`<li><span class="nametitle">${removeName}</span>離開聊天室</li>`);
+    $("#messagesList").append(`<div class="word_green">//Console.WriteLine("${removeName}離開聊天室");</div>`);
 
-    connection.invoke("GetLastestUsetList").catch(function (err) {
-        return console.error(err.toString());
-    });
+
 });
 
 //重整最新user列表
 connection.on("UsetList", function (userlist) {
     var content = '';
     for (let value of userlist) {
-        content += `<li>${value}</li>`
+        content += `<div class="user"><img src="/images/csharp-icon.png">Chat_${value}.cs</div>`
     }
     $('#userList').html(content);
 });
@@ -92,3 +90,9 @@ connection.on("UsetList", function (userlist) {
 
 
 
+function updateUserList() {
+    connection.invoke("GetLastestUsetList").catch(function (err) {
+        return console.error(err.toString());
+    });
+
+}
