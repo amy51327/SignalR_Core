@@ -394,7 +394,7 @@ select {
 
 #messagesList {
     padding-top: 10px;
-    max-height: 98%;
+    max-height: 95%;
     overflow: auto;
     margin-block-start: 1em;
     padding-inline-start: 40px;
