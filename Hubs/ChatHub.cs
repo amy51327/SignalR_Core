@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.SignalR;
 using SignalR_Core.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,7 +45,6 @@ namespace SignalR_Core.Hubs
                 UserHandler.user.Add(model);
             }
 
-
             Clients.All.SendAsync("AddUser", model);//呼叫前端function
         }
 
@@ -62,17 +60,15 @@ namespace SignalR_Core.Hubs
             {
                 UserHandler.user.Remove(item);//刪除
 
-                Clients.All.SendAsync("UserOffline", item.name);  //呼叫前端function       
+                Clients.All.SendAsync("UserOffline", item.name);  //呼叫前端function
             }
             return base.OnDisconnectedAsync(exception);
         }
-
 
         public void GetLastestUsetList()
         {
             var list = UserHandler.user.Select(x => x.name);
             Clients.All.SendAsync("UsetList", list);
         }
-
     }
 }
