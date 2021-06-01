@@ -87,9 +87,14 @@ connection.on("UsetList", function (userlist) {
 });
 
 
+window.onresize = function () {
+    changeheigth();
+}
 
+function changeheigth() {
 
-
+    document.getElementById('chat_content').style.height = window.innerHeight - 230 + 'px';
+}
 function updateUserList() {
     connection.invoke("GetLastestUsetList").catch(function (err) {
         return console.error(err.toString());
