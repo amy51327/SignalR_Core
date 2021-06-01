@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 //enter user name
 var person = prompt("Please enter your name");
 var id = '';
@@ -10,15 +10,12 @@ if (person != null) {
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
 
-//Disable send button until connection is established
-document.getElementById("sendButton").disabled = true;
 
 
 //連接成功
 connection.start().then(function () {
-    //送出訊息按鈕打開
-    document.getElementById("sendButton").disabled = false;
-    //add user
+
+    //add user    
     var user = document.getElementById("userInput").value;
     connection.invoke("UserConnected", user).catch(function (err) {
         return console.error(err.toString());
@@ -28,15 +25,29 @@ connection.start().then(function () {
     return console.error(err.toString());
 });
 
+
 //送訊息至server
-document.getElementById("sendButton").addEventListener("click", function (event) {
-    var user = document.getElementById("userInput").value;
-    var message = document.getElementById("messageInput").value;
-    connection.invoke("SendMessage", user, message).catch(function (err) {
-        return console.error(err.toString());
+
+document.getElementById("messageInput")
+    .addEventListener("keyup", function (event) {
+        event.preventDefault();
+        if (event.keyCode === 13) {
+            var user = document.getElementById("userInput").value;
+            var message = document.getElementById("messageInput").value;
+            connection.invoke("SendMessage", user, message).catch(function (err) {
+                return console.error(err.toString());
+            });
+            event.preventDefault();
+        }
     });
-    event.preventDefault();
-});
+//document.getElementById("sendButton").addEventListener("click", function (event) {
+//    var user = document.getElementById("userInput").value;
+//    var message = document.getElementById("messageInput").value;
+//    connection.invoke("SendMessage", user, message).catch(function (err) {
+//        return console.error(err.toString());
+//    });
+//    event.preventDefault();
+//});
 
 //server傳回
 //show訊息
