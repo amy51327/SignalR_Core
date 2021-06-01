@@ -55,7 +55,8 @@ connection.on("ReceiveMessage", function (user, message) {
     $("#messagesList").append(`<div><span class="word_darkblue">public string </span>
 <span class="word_yellow">${user}</span>()<br>{<br><div class="message_content">
 <span class="word_purple">return </span><span class="word_orange">"${message}"</span>;</div>}</div>`);
-
+    
+    scrollToEnd();
 
 });
 //add user list
@@ -66,14 +67,14 @@ connection.on("AddUser", function (user) {
     $("#messagesList")
         .append(`<div><span class="word_blue">Console</span>.<span class="word_yellow">WriteLine</span>
                  <span>(</span><span class="word_orange">"${user.name}加入聊天室"</span><span>);</span>`);     
-
+    scrollToEnd();
 });
 //user離線
 connection.on("UserOffline", function (removeName) {
     //重新載入user列表
     updateUserList();
     $("#messagesList").append(`<div class="word_green">//Console.WriteLine("${removeName}離開聊天室");</div>`);
-
+    scrollToEnd();
 
 });
 
@@ -100,4 +101,9 @@ function updateUserList() {
         return console.error(err.toString());
     });
 
+}
+// keep scrollbar always at bottom
+function scrollToEnd() {
+    var messagesList = document.getElementById("messagesList");
+    messagesList.scrollTop = messagesList.scrollHeight;
 }
