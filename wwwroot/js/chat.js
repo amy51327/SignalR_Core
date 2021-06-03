@@ -1,15 +1,21 @@
 "use strict";
 //enter user name
-var person = prompt("Please enter your name");
-var id = '';
-//set user name
-if (person != null) {
-    document.getElementById("userInput").innerHTML = person;
-    document.getElementById("userInput").value = person;
+window.onload = function () {
+    enterNameFunction();
+}
+
+function enterNameFunction() {
+    var name = prompt('Enter Your Name');
+    if (name !== null && name.match(/^ *$/) === null) {
+        document.getElementById("userInput").innerHTML = name;
+        document.getElementById("userInput").value = name;
+    }
+    else {
+        enterNameFunction()
+    }
 }
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
-
 //連接成功
 connection.start().then(function () {
     //add user
