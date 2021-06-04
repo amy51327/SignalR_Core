@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SignalR_Core.Hubs
 {
-    //目前所有連線的list
+    //all online user list
     public static class UserHandler
     {
         public static List<UserData> user = new List<UserData>();
@@ -15,7 +15,7 @@ namespace SignalR_Core.Hubs
     public class ChatHub : Hub
     {
         /// <summary>
-        ///  客戶端發送消息
+        ///  send message from client
         /// </summary>
         /// <param name="user"></param>
         /// <param name="message"></param>
@@ -26,12 +26,11 @@ namespace SignalR_Core.Hubs
         }
 
         /// <summary>
-        /// 客戶端連接時觸發
+        /// client connects
         /// </summary>
         /// <param name="username"></param>
         public void UserConnected(string username)
         {
-            //使用者連線 加入清單
             var model = UserHandler.user.FirstOrDefault(x => x.id == Context.ConnectionId);
 
             if (model == null)
@@ -45,11 +44,11 @@ namespace SignalR_Core.Hubs
                 UserHandler.user.Add(model);
             }
 
-            Clients.All.SendAsync("AddUser", model);//呼叫前端function
+            Clients.All.SendAsync("AddUser", model);
         }
 
         /// <summary>
-        /// 客戶端離線時觸發
+        /// clients offline
         /// </summary>
         /// <param name="exception"></param>
         /// <returns></returns>
@@ -58,13 +57,16 @@ namespace SignalR_Core.Hubs
             var item = UserHandler.user.FirstOrDefault(x => x.id == Context.ConnectionId);
             if (item != null)
             {
-                UserHandler.user.Remove(item);//刪除
+                UserHandler.user.Remove(item);
 
-                Clients.All.SendAsync("UserOffline", item.name);  //呼叫前端function
+                Clients.All.SendAsync("UserOffline", item.name);
             }
             return base.OnDisconnectedAsync(exception);
         }
 
+        /// <summary>
+        /// get lastest userlist
+        /// </summary>
         public void GetLastestUsetList()
         {
             var list = UserHandler.user.Select(x => x.name);

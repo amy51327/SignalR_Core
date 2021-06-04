@@ -16,7 +16,7 @@ function enterNameFunction() {
 }
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
-//連接成功
+//connect success
 connection.start().then(function () {
     //add user
     var user = document.getElementById("userInput").value;
@@ -27,7 +27,7 @@ connection.start().then(function () {
     return console.error(err.toString());
 });
 
-//送訊息至server
+//send message to server
 
 document.getElementById("messageInput")
     .addEventListener("keyup", function (event) {
@@ -43,8 +43,7 @@ document.getElementById("messageInput")
         }
     });
 
-//server傳回
-//show訊息
+//server return and show message
 connection.on("ReceiveMessage", function (user, message) {
     $("#messagesList").append(`<div><span class="word_darkblue">public string </span>
 <span class="word_yellow">${user}</span>()<br>{<br><div class="message_content">
@@ -54,7 +53,7 @@ connection.on("ReceiveMessage", function (user, message) {
 });
 //add user list
 connection.on("AddUser", function (user) {
-    //重新載入user列表
+    //reload user list
     updateUserList();
 
     $("#messagesList")
@@ -62,15 +61,16 @@ connection.on("AddUser", function (user) {
                  <span>(</span><span class="word_orange">"${user.name}加入聊天室"</span><span>);</span>`);
     scrollToEnd();
 });
-//user離線
+
+//user offline
 connection.on("UserOffline", function (removeName) {
-    //重新載入user列表
+    //reload user list
     updateUserList();
     $("#messagesList").append(`<div class="word_green">//Console.WriteLine("${removeName}離開聊天室");</div>`);
     scrollToEnd();
 });
 
-//重整最新user列表
+//reload user list
 connection.on("UsetList", function (userlist) {
     var content = '';
     for (let value of userlist) {
@@ -91,6 +91,7 @@ function updateUserList() {
         return console.error(err.toString());
     });
 }
+
 // keep scrollbar always at bottom
 function scrollToEnd() {
     var messagesList = document.getElementById("messagesList");
